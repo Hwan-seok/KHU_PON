@@ -7,26 +7,19 @@ AWS.config.loadFromPath('lib/config.json');
 const s3 = new AWS.S3();
 let multer = require("multer");
 let multerS3 = require('multer-s3');
-
-// let upload = multer({
-//   storage: multerS3({
-//     s3: s3,
-//     bucket: "khupon",
-//     key: function (req, file, cb) {
-//       let extension = path.extname(file.originalname);
-//       cb(null, Date.now().toString() + extension)
-//     },
-//     acl: 'public-read-write',
-//   })
-// })
+const path = require('path');
 let upload = multer({
-  dest: "/"
+  storage: multerS3({
+    s3: s3,
+    bucket: "khupon",
+    key: function (req, file, cb) {
+      let extension = path.extname(file.originalname);
+      cb(null, Date.now().toString() + extension)
+    },
+    acl: 'public-read-write',
+  })
 })
  
-
-
-출처: http://victorydntmd.tistory.com/39 [victolee]
-
 
 router.get('/adList', function (req, res, next) {
   const sql = "SELECT * FROM ad";
@@ -46,13 +39,15 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
   const company = info.company;
   const title = info.title;
   const content = info.content;
-  console.log(req.files);
-
-  const sql = "INSERT INTO ad ('title', 'content', 'file','company') VALUES (?,?,?,?)";
-  db.query(sql, [title, content, image, company], (err, result) => {
-    db.query("SELECT LAST_INSERT_ID()",(err,id)=>{
-      console.log(id);
-    res.redirect(`/${id}`);
+  let image;
+  if(req.file)
+    image = req.file.location;
+  let imgCheck;
+  if(image)imgCheck=1;
+  const sql = "INSERT INTO ad (title, content, imgURL,company,imgCheck) VALUES (?,?,?,?,?)";
+  db.query(sql, [title, content, image, company,imgCheck], (err, result) => {
+    db.query("SELECT LAST_INSERT_ID() AS id",(err,id)=>{
+    res.redirect(`/${id[0].id}`);
   });
   })
 });
@@ -71,7 +66,6 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
   router.get('/:id', function (req, res, next) {
     let sql;
     
-    console.log(req.params.id);
     if (req.id == -1) {
        sql = "SELECT * FROM ad order by rand() limit 1";
     } else {
@@ -79,11 +73,10 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
     }  // ad = { num:",,,", title:" ,, " , description : "@22" , image : "###"}
     
     db.query(sql, (err, ad) => {
-      console.log(ad);
       const company = ad[0].company;
       const title = ad[0].title; //db 에서 불러온 이름
       const content = ad[0].content;
-      const imgURL = ad[0].file; //s3 주소
+      const imgURL = ad[0].imgURL; //s3 주소
       const imgCheck = ad[0].imgCheck;
       res.render('home', {
         company,
