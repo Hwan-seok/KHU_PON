@@ -52,23 +52,17 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
   })
 });
   /* GET home page. */
-  router.get('/favicon.ico',(req,res)=>{
-    res.send('images/pic02');
-  })
-  router.get('/:id', function (req, res, next) {
+router.get('/:id', function (req, res, next) {
     let sql;
-    console.log(req.params.id);
-
-    if (req.params.id == -1) {
-       //sql = "SELECT * FROM ad order by rand() limit 1";
+    
+    if (req.params.id == 0) {
        sql = "SELECT * FROM ad order by rand() limit 1";
     } else {
-       sql = `SELECT * FROM ad WHERE id =${req.params.id}`
+       sql = "SELECT * FROM ad WHERE id =${req.params.id}"
     }  // ad = { num:",,,", title:" ,, " , description : "@22" , image : "###"}
     
     db.query(sql, (err, ad) => {
-
-      console.log(err);
+      console.log(ad);
       const company = ad[0].company;
       const title = ad[0].title; //db 에서 불러온 이름
       const content = ad[0].content;
@@ -84,8 +78,9 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
       });
     })
   });
-  router.get('/', function (req, res, next) {
-   res.redirect('/-1');
-  })
+
+  // router.get('/', function (req, res, next) {
+  //   res.redirect('/adList');
+  // })
 
 module.exports = router;
