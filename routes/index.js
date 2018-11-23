@@ -36,19 +36,17 @@ router.get('/submitAd', function (req, res, next) {
 
 router.post('/submitAd', upload.single("file"), function (req, res, next) {
   const info = req.body;
-  console.log("info",info);
   const company = info.company;
   const title = info.title;
   const content = info.content;
-  const image = req.file.location;
+  let image;
+  if(req.file)
+    image = req.file.location;
   let imgCheck;
   if(image)imgCheck=1;
   const sql = "INSERT INTO ad (title, content, imgURL,company,imgCheck) VALUES (?,?,?,?,?)";
   db.query(sql, [title, content, image, company,imgCheck], (err, result) => {
-    console.log("result",result);
-    console.log("err",err);
     db.query("SELECT LAST_INSERT_ID() AS id",(err,id)=>{
-      console.log("ASDFASDF",id[0].id);
     res.redirect(`/${id[0].id}`);
   });
   })
@@ -78,7 +76,7 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
       const company = ad[0].company;
       const title = ad[0].title; //db 에서 불러온 이름
       const content = ad[0].content;
-      const imgURL = ad[0].file; //s3 주소
+      const imgURL = ad[0].imgURL; //s3 주소
       const imgCheck = ad[0].imgCheck;
       res.render('home', {
         company,
