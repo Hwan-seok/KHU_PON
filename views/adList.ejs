@@ -23,22 +23,24 @@
 <body class="landing">
 
     <!-- Header -->
-    <header id="header">
-        <h1><a href="">Transit</a></h1>
-        <nav id="nav">
-            <ul>
-                <li><a href="/"></a>HOME</a></li>
-                <li><a href="/adList">광고 더보기</a></li>
-                <li><a href="/submitAd">광고 요청</a></li>
-                <li><a href="#" class="button special">Sign Up</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header id="header">
+    <h1><a href="">Transit</a></h1>
+    <nav id="nav">
+      <ul>
+        <li><a href="/-1"></a>HOME</a></li>
+        <li><a href="/adList">광고 더보기</a></li>
+        <li><a href="/submitAd">광고 요청</a></li>
+        <li><a href="#" class="button special">Sign Up</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- Banner -->
-    <section id="banner">
-        <h2>This is KHUpon.</h2>
-        <p>내 주변의 할인정보, 지금 바로 확인하세요.</p>
+  <!-- Banner -->
+  <section id="banner">
+    <h2>This is KHUpon.</h2>
+    <p>내 주변의 할인정보,</p> 
+    <p>지금 바로 확인하세요.</p>
+  </br>
         <ul class="actions">
             <li>
                 <a href="#" class="button big">오늘의 쿠폰</a>
@@ -46,19 +48,27 @@
         </ul>
     </section>
 
-    <!-- One -->
-    <section id="one" class="wrapper style1 special">
-        <div class="container">
-            <header class="major">
+    <!-- Table -->
+    <section>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>업체명</th>
+                        <th>제목</th>
+                    </tr>
+                </thead>
                 <% if(list){ %>
                     <% for (item in list) { %>
-                        <a href="/<%= list[item].id %>">
-                            <%= list[item].company %>
-                            <%= list[item].title %>
-                        </a>
+                        <tbody>
+                            <tr>
+                                <td><a href="/<%= list[item].id %>"> <%= list[item].company %></a></td>
+                                <td><a href="/<%= list[item].id %>"><%= list[item].title %></a></td>
+                            </tr>
+                        </tbody>
                     <% } %>        
                 <%}%>
-            </header>
+            </table>
         </div>
     </section>
 
