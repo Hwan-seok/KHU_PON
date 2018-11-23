@@ -23,9 +23,9 @@ let upload = multer({
 
 router.get('/adList', function (req, res, next) {
   const sql = "SELECT * FROM ad";
-  db.query(sql, (err, ad) => {
+  db.query(sql, (err, list) => {
     res.render('adList', {
-      ad //광고 전체 배열 => 안에 객체들이 들어있음
+      list //광고 전체 배열 => 안에 객체들이 들어있음
     });
   })
 });
@@ -42,7 +42,7 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
   let image;
   if(req.file)
     image = req.file.location;
-  let imgCheck;
+  let imgCheck=0;
   if(image)imgCheck=1;
   const sql = "INSERT INTO ad (title, content, imgURL,company,imgCheck) VALUES (?,?,?,?,?)";
   db.query(sql, [title, content, image, company,imgCheck], (err, result) => {
@@ -51,17 +51,6 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
   });
   })
 });
-// s3_aws.addFile = function(files, dir){
-//   var params = {Bucket: "khupon", Key: dir, Body: files};
-//   s3.upload(params).on('httpUploadProgress', function (evt) { console.log(evt); }).
-//       send(function (err, data) {
-//         //S3 File URL
-//         var url = data.Location
-//         console.log(url);
-//         //어디에서나 브라우저를 통해 접근할 수 있는 파일 URL을 얻었습니다.
-//       })
-// }
-
   /* GET home page. */
   router.get('/:id', function (req, res, next) {
     let sql;
@@ -73,11 +62,13 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
     }  // ad = { num:",,,", title:" ,, " , description : "@22" , image : "###"}
     
     db.query(sql, (err, ad) => {
+
       const company = ad[0].company;
       const title = ad[0].title; //db 에서 불러온 이름
       const content = ad[0].content;
       const imgURL = ad[0].imgURL; //s3 주소
       const imgCheck = ad[0].imgCheck;
+
       res.render('home', {
         company,
         title,
@@ -87,5 +78,8 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
       });
     })
   });
+  router.get('/', function (req, res, next) {
+    res.redirect('/adList');
+  })
 
 module.exports = router;
