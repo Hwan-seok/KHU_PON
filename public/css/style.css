@@ -356,8 +356,8 @@
 
 		input[type="checkbox"]:checked + label:before,
 		input[type="radio"]:checked + label:before {
-			background: #3cadd4;
-			border-color: #3cadd4;
+			background: #8A0A12;
+			border-color: #8A0A12;
 			color: #ffffff;
 			content: '\f00c';
 		}
@@ -464,7 +464,7 @@
 			}
 
 			.icon.rounded.color1 {
-				background-color: #3cadd4;
+				background-color: #8A0A12;
 			}
 
 			.icon.rounded.color2 {
@@ -1114,7 +1114,7 @@
 			}
 
 		.wrapper.style3 {
-			background-color: #3cadd4;
+			background-color: #8A0A12;
 			color: #ffffff;
 		}
 
