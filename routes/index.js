@@ -55,7 +55,7 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
   router.get('/:id', function (req, res, next) {
     let sql;
     
-    if (req.id == -1) {
+    if (req.params.id == -1) {
        sql = "SELECT * FROM ad order by rand() limit 1";
     } else {
        sql = `SELECT * FROM ad WHERE id =${req.params.id}`
