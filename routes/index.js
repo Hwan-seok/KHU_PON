@@ -79,7 +79,7 @@ router.post('/submitAd', upload.single("file"), function (req, res, next) {
     })
   });
   router.get('/', function (req, res, next) {
-    res.redirect('/adList');
+    res.redirect('/-1');
   })
 
 module.exports = router;
