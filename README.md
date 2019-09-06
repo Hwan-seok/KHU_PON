@@ -1,7 +1,7 @@
 # KHU_PON
 
 ## What is KHU_PON? 
-- KHU is abbreviation of Kyung Hee University because creators of this service are KHU members and launched first in KHU
+- KHU is abbreviation of Kyung Hee University because creators of this service are KHU members and launched first in there
 - PON means coupon beacuse it issues coupon
 
 ## Perpose
